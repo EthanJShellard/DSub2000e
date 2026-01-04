@@ -4,13 +4,13 @@ android {
 	compileSdkVersion 36
 
 	defaultConfig {
-		applicationId "github.paroj.dsub2000"
+		applicationId "github.paroj.dsub2000e"
 		minSdkVersion 24
 		targetSdkVersion 36
 		versionCode 213
 		versionName '5.7.0'
 		vectorDrawables.useSupportLibrary = true
-		setProperty("archivesBaseName", "DSub2000_$versionName")
+		setProperty("archivesBaseName", "DSub2000e_$versionName")
         resourceConfigurations += ['de', 'es', 'fr', 'hu', 'nl', 'pt-rPT', 'ru', 'sv', 'zh']
         vectorDrawables.useSupportLibrary = true
 		resValue 'string', 'account_type.subsonic', applicationId + ".subsonic"
