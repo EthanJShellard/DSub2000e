@@ -210,6 +210,9 @@ public class SubsonicFragment extends Fragment implements SwipeRefreshLayout.OnR
 			case R.id.menu_global_shuffle:
 				onShuffleRequested();
 				return true;
+            case R.id.menu_download_all:
+                downloadBackgroundAll(true);
+                return true;
 			case R.id.menu_exit:
 				exit();
 				return true;
@@ -2004,6 +2007,40 @@ public class SubsonicFragment extends Fragment implements SwipeRefreshLayout.OnR
 			downloadBackground(save, songs);
 		}
 	}
+
+    protected void downloadBackgroundAll( final boolean save ){
+        if (getDownloadService() == null) {
+            return;
+        }
+
+        warnIfStorageUnavailable();
+        new RecursiveLoader(context) {
+            @Override
+            protected Boolean doInBackground() throws Throwable {
+                MusicService service = MusicServiceFactory.getMusicService(context);
+                List<Entry> albumList = service
+                        .getAlbumList("alphabeticalByName", 5000, 0, true, context, null)
+                        .getChildren();
+
+                List<MusicDirectory.Entry> songs = new ArrayList<>();
+                for ( Entry album : albumList ) {
+                    updateProgress( String.format( "Fetching songs for '%s'\nSongs Fetched:%d", album.getAlbum(), songs.size() ) );
+                    songs.addAll(service.getMusicDirectory(album.getId(), "", true, context, null).getSongs());
+                }
+
+                updateProgress( String.format( "Fetched %d songs' info, getting them...", songs.size() ) );
+                getSongsRecursively( songs, true );
+                updateProgress( "Starting background downloads..." );
+                getDownloadService().downloadBackground(songs, save);
+                return null;
+            }
+
+            @Override
+            protected void done(Boolean result) {
+                Util.toast(context, "Started Downloading All!" );
+            }
+        }.execute();
+    }
 
 	protected void downloadBackground(final boolean save, final List<Entry> entries) {
 		if (getDownloadService() == null) {

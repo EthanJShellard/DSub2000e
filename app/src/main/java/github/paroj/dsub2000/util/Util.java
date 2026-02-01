@@ -320,6 +320,9 @@ public final class Util {
 
     public static int getCacheSizeMB(Context context) {
         SharedPreferences prefs = getPreferences(context);
+        if ( prefs.getBoolean("cacheAll", false) ){
+            return -1;
+        }
         int cacheSize = Integer.parseInt(prefs.getString(Constants.PREFERENCES_KEY_CACHE_SIZE, "-1"));
         return cacheSize == -1 ? Integer.MAX_VALUE : cacheSize;
     }

@@ -102,4 +102,11 @@
 			android:key="screenLitOnDownload"
 			android:defaultValue="true"/>
 	</PreferenceCategory>
+    <PreferenceCategory android:title="Extra (Stupid and Dangerous)">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="cacheAll"
+            android:title="Cache Entire Library" />
+    </PreferenceCategory>
 </PreferenceScreen>

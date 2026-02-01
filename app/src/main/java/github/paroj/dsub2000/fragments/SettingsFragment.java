@@ -107,6 +107,7 @@ public class SettingsFragment extends PreferenceCompatFragment implements Shared
 	private String internalSSIDDisplay;
 	private EditTextPreference cacheSize;
 	private ListPreference openToTab;
+    private CheckBoxPreference cacheAll;
 
 	private int serverCount = 3;
 	private SharedPreferences settings;
@@ -296,6 +297,7 @@ public class SettingsFragment extends PreferenceCompatFragment implements Shared
         colorActionBar = (CheckBoxPreference) this.findPreference(Constants.PREFERENCES_KEY_COLOR_ACTION_BAR);
         actionBarColor = (ColorPickerPreference) this.findPreference(Constants.PREFERENCES_KEY_ACTION_BAR_COLOR);
         actionBarColorNowPlaying = (ColorPickerPreference) this.findPreference(Constants.PREFERENCES_KEY_ACTION_BAR_NOW_PLAYING_COLOR);
+        cacheAll = (CheckBoxPreference) this.findPreference(Constants.PREFERENCES_KEY_CACHE_ALL);
 
 		settings = Util.getPreferences(context);
 		serverCount = settings.getInt(Constants.PREFERENCES_KEY_SERVER_COUNT, 1);

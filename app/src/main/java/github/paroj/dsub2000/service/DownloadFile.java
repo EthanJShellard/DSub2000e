@@ -226,7 +226,7 @@ public class DownloadFile implements BufferFile {
 
 	@Override
     public synchronized boolean isWorkDone() {
-        return saveFile.exists() || (completeFile.exists() && !save) || saveWhenDone || completeWhenDone;
+        return saveFile.exists() || (completeFile.exists() && !shouldSave()) || saveWhenDone || completeWhenDone;
     }
 
 	@Override
@@ -255,7 +255,7 @@ public class DownloadFile implements BufferFile {
     }
 
     public boolean shouldSave() {
-        return save;
+        return save || Util.getPreferences(context).getBoolean("cacheAll", false);
     }
 
     public boolean isFailed() {
@@ -321,7 +321,7 @@ public class DownloadFile implements BufferFile {
 				renameInStore(completeFile, saveFile);
 				saveWhenDone = false;
 			} else if(completeWhenDone && !isPlaying) {
-				if(save) {
+				if(shouldSave()) {
 					deleteFromStore();
 					Util.renameFile(partialFile, saveFile);
                     saveToStore();
@@ -438,7 +438,7 @@ public class DownloadFile implements BufferFile {
                     return null;
                 }
                 if (completeFile.exists()) {
-                    if (save) {
+                    if (shouldSave()) {
 						if(isPlaying) {
 							saveWhenDone = true;
 						} else {
@@ -497,7 +497,7 @@ public class DownloadFile implements BufferFile {
 					completeWhenDone = true;
 				} else {
 					deleteFromStore();
-					if(save) {
+					if(shouldSave()) {
 						Util.renameFile(partialFile, saveFile);
 					} else {
 						Util.renameFile(partialFile, completeFile);
